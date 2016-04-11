@@ -1,0 +1,17 @@
+function template = tl_pos(template_images_pos)
+% input:
+%     template_images_pos - a cell array, each one contains [16 x 16 x 9] matrix
+% output:
+%     template - [16 x 16 x 9] matrix
+
+for i=1:size(template_images_pos);
+    patch = template_images_pos{i};
+    patchHog(:,:,:,i) = hog(patch);
+end
+
+for j=1:size(patchHog, 4)
+    sum = sum + patchHog(:,:,:,j);
+end
+sum = sum
+
+end
