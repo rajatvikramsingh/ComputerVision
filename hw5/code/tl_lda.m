@@ -9,12 +9,12 @@ function template = tl_lda(template_images_pos, template_images_neg, lambda)
 sumph = 0;
 for i=1:size(template_images_neg, 1);
     patch = template_images_neg{i};
-    sumph = sumph + hog(patch);
+    sumph = sumph + hog(double(patch));
 end
 
 templateNeg = sumph./size(template_images_neg, 1);
 
-sumTerm = 0;
+sumTerm = zeros(size(templateNeg));
 for i=1:size(template_images_neg, 1)
     temp = hog(template_images_neg{i});
     diff = double(temp) - templateNeg;

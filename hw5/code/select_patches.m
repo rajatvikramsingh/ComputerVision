@@ -11,7 +11,9 @@ for i=1:6
     else
         side = rect(4);
     end
-    patch = I(rect(2) + 1: rect(2) + side, rect(1) + 1: rect(1) + side);
+    I = rgb2gray(I);
+    I = im2double(I);
+    patch = I(rect(2): rect(2) + side -1, rect(1): rect(1) + side-1);
     patch = imresize(patch, [128 128]);
     template_images_pos{i} = patch;
     
@@ -19,7 +21,7 @@ for i=1:6
         done = 0;
         while(done ~= 1)
             x = randi([1 + 128, size(I, 1) - 128]);
-            y = randi([1 + 128, size(I, 2)] - 128);
+            y = randi([1 + 128, size(I, 2)] - 128); 
             %if ((x + side < rect(2) + 1 && x + 1 < rect(2)) && (y + 1 > rect(1) || y + side > rect(1)))
             if (~(rect(2) + side > x && x > rect(2) + 1 && rect(1) + side > y && y > rect(1) + 1))
                 negpatch = I(x + 1: x + 128, y + 1: y + 128);

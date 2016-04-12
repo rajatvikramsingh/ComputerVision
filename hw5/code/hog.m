@@ -26,9 +26,23 @@ end
 finalI = zeros(height + 8 - hmod, width + 8 - wmod);
 
 finalI(1:height, 1:width) = I;
-[mag, ~] = mygradient(finalI);
+[mag, ori] = mygradient(finalI);
 thresh = 0.1*max(mag(:));
+mag_thresh = mag  > thresh;
 ohist = zeros(size(finalI, 1)/8, size(finalI, 2)/8, 9);
+
+j=1;
+for i=-180:40:140
+    min_angle = i;
+    max_angle = i+40;
+    orientations = ori > min_angle & ori < max_angle;
+    pixels = orientations & mag_thresh;
+    collectPixels = im2col(pixels, [8 8], 'distinct');
+    collectPixels = sum(collectPixels);
+    collectPixels = collectPixels/sum(collectPixels);
+    ohist(:,:,j) = reshape(collectPixels, size(ohist, 1), size(ohist, 2));
+    j = j+1;
+end
 
 % B = im2col(I, [8 8], 'distinct');
 % 
@@ -41,16 +55,16 @@ ohist = zeros(size(finalI, 1)/8, size(finalI, 2)/8, 9);
 %     histg = histg/sum(histg);
 %     ohist(i + 1, j + 1, :) = histg;
 % end
-
-for i=0:(size(finalI, 1)/8) - 1
-    for j=0:(size(finalI, 2)/8) - 1
-        [mag, ori] = mygradient(finalI(i*8 + 1:(i*8)+8, j*8+1:(j*8)+8));
-        [row, col] = find(mag > thresh);
-        fOri = ori(sub2ind(size(ori),row,col));
-        [row, col] = find(fOri ~= 0);
-        fOri = fOri(sub2ind(size(fOri),row,col));
-        histg = hist(fOri, 9) + ones(1, 9);
-        histg = histg/sum(histg);
-        ohist(i + 1, j + 1, :) = histg;
-    end
-end
+% 
+% for i=0:(size(finalI, 1)/8) - 1
+%     for j=0:(size(finalI, 2)/8) - 1
+%         [mag, ori] = mygradient(finalI(i*8 + 1:(i*8)+8, j*8+1:(j*8)+8));
+%         [row, col] = find(mag > thresh);
+%         fOri = ori(sub2ind(size(ori),row,col));
+%         [row, col] = find(fOri ~= 0);
+%         fOri = fOri(sub2ind(size(fOri),row,col));
+%         histg = hist(fOri, 9) + ones(1, 9);
+%         histg = histg/sum(histg);
+%         ohist(i + 1, j + 1, :) = histg;
+%     end
+% end

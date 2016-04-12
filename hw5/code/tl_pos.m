@@ -7,7 +7,7 @@ function template = tl_pos(template_images_pos)
 sumph = 0;
 for i=1:size(template_images_pos);
     patch = template_images_pos{i};
-    sumph = sumph + hog(patch);
+    sumph = sumph + hog(double(patch));
 end
 
 template = sumph./size(template_images_pos, 1);

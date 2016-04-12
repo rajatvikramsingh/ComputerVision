@@ -13,33 +13,33 @@ blockx = round(x/8);
 blocky = round(y/8); 
 
 % %visualize image patches that the user clicked on
-% figure(2); clf;
-% for i = 1:nclick
-%   patch = Itrain(8*blocky(i)+(-63:64),8*blockx(i)+(-63:64));
-%   figure(2); subplot(3,2,i); imshow(patch);
-% end
+figure(2); clf;
+for i = 1:nclick
+  patch = Itrain(8*blocky(i)+(-63:64),8*blockx(i)+(-63:64));
+  figure(2); subplot(3,2,i); imshow(patch);
+end
 % 
 % % compute the hog features
-% f = hog(Itrain);
+f = hog(Itrain);
 % 
 % % compute the average template for the user clicks
-% template = zeros(16,16,9);
-% for i = 1:nclick
-%   template = template + f(blocky(i)+(-7:8),blockx(i)+(-7:8),:); 
-% end
-% template = template/nclick;
+template = zeros(16,16,9);
+for i = 1:nclick
+  template = template + f(blocky(i)+(-7:8),blockx(i)+(-7:8),:); 
+end
+template = template/nclick;
 % 
-template = tl_lda(template_images_pos, template_images_neg, lambda);
+%template = tl_lda(template_images_pos, template_images_neg, lambda);
 %template = tl_pos_neg(template_images_pos, template_images_neg);
 %
 % load a test image
 %
 %%
-Itest= im2double(rgb2gray(imread('../data/test0.jpg')));
+Itest= im2double(rgb2gray(imread('../data/test12.jpg')));
 
 
 % find top 5 detections in Itest
-ndet = 1;
+ndet = 5;
 [x,y,score] = detect(Itest,template,ndet);
 
 %display top ndet detections

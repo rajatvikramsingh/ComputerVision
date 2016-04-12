@@ -1,4 +1,4 @@
-function V = hogDraw( H, w )
+function V = hogdraw( H, w )
 % Create visualization of hog template
 %
 % USAGE
